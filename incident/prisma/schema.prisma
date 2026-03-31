@@ -1,0 +1,67 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [postgis]
+}
+
+model Incident {
+  id           Int       @id @default(autoincrement())
+  /// [IncidentType]
+  type         Json
+  description  String?
+  /// [IncidentLocation]
+  location     Json
+  /// [IncidentPriority]
+  priority     Json
+  /// [IncidentMetadata]
+  metadata     Json?
+  status       Status    @default(created)
+  reporterId   String?
+  operatorId   String?
+  version      Int       @default(1)
+  dispatchedAt DateTime?
+  resolvedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status])
+}
+
+model Outbox {
+  id            Int          @id @default(autoincrement())
+  aggregateType String
+  aggregateId   Int
+  topic         String
+  eventType     String
+  payload       Json
+  status        OutboxStatus @default(pending)
+  attempts      Int          @default(0)
+  nextAttempt   DateTime?
+  createdAt     DateTime     @default(now())
+  publishedAt   DateTime?
+
+  @@index([status, createdAt])
+}
+
+enum Status {
+  created
+  dispatched
+  in_progress
+  resolved
+  cancelled
+}
+
+enum OutboxStatus {
+  pending
+  published
+  failed
+}

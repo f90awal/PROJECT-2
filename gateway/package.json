@@ -1,0 +1,21 @@
+{
+	"name": "gateway",
+	"type": "module",
+	"main": "dist/index.js",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "rm -rf dist && node build.mjs",
+		"start": "node dist/index.js"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.19.11",
+		"dotenv": "^17.3.1",
+		"hono": "^4.12.8"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.17",
+		"esbuild": "^0.25.12",
+		"tsx": "^4.7.1",
+		"typescript": "^5.8.3"
+	}
+}

@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  name           String
+  email          String          @unique
+  role           Role
+  affiliation    Affiliation     @default(system)
+  isActive       Boolean         @default(true)
+  lastLogin      DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  authCredential AuthCredential?
+}
+
+model AuthCredential {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @unique
+  password String
+  user     User   @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  admin
+  super
+}
+
+enum Affiliation {
+  police
+  fire
+  hospital
+  system
+}

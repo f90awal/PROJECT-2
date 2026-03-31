@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EmergencyService {
+  ambulance
+  fire
+  police
+}
+
+model IncidentFact {
+  id           Int       @id @default(autoincrement())
+  incidentId   String    @unique
+  region       String
+  incidentType String
+  status       String?
+  createdAt    DateTime
+  dispatchedAt DateTime?
+  resolvedAt   DateTime?
+  metadata     Json?
+  ingestedAt   DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([region, incidentType])
+  @@index([status])
+}
+
+model DispatchFact {
+  id               Int              @id @default(autoincrement())
+  dispatchId       String           @unique
+  incidentId       String
+  emergencyService EmergencyService
+  responderId      String?
+  responderName    String?
+  region           String?
+  dispatchedAt     DateTime
+  arrivedAt        DateTime?
+  clearedAt        DateTime?
+  ingestedAt       DateTime         @default(now())
+
+  @@index([incidentId])
+  @@index([dispatchedAt])
+  @@index([emergencyService, responderId])
+}
+
+model HospitalCapacityFact {
+  id                  Int      @id @default(autoincrement())
+  hospitalId          String
+  hospitalName        String?
+  region              String?
+  totalBeds           Int
+  availableBeds       Int
+  totalAmbulances     Int?
+  availableAmbulances Int?
+  capturedAt          DateTime
+  ingestedAt          DateTime @default(now())
+
+  @@index([capturedAt])
+  @@index([hospitalId, capturedAt])
+  @@index([region])
+}

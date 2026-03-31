@@ -1,0 +1,41 @@
+{
+	"name": "mw",
+	"version": "1.0.0",
+	"private": true,
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "pnpm --filter gateway dev",
+		"dev:analytics": "pnpm --filter analytics dev",
+		"dev:auth": "pnpm --filter auth dev",
+		"dev:gateway": "pnpm --filter gateway dev",
+		"dev:incident": "pnpm --filter incident dev",
+		"dev:dispatch": "pnpm --filter dispatch dev",
+		"dev:client": "pnpm --filter client dev",
+		"db:generate": "pnpm --filter auth db:generate && pnpm --filter incident db:generate && pnpm --filter dispatch db:generate && pnpm --filter analytics db:generate",
+		"db:migrate": "pnpm --filter auth db:migrate && pnpm --filter incident db:migrate && pnpm --filter dispatch db:migrate && pnpm --filter analytics db:migrate",
+		"db:migrate:deploy": "pnpm --filter auth db:migrate:deploy && pnpm --filter incident db:migrate:deploy && pnpm --filter dispatch db:migrate:deploy && pnpm --filter analytics db:migrate:deploy",
+		"postinstall": "node scripts/sync-envs.mjs && pnpm --filter auth build && pnpm --filter common build && pnpm --filter incident build && pnpm --filter dispatch build && pnpm --filter client build && pnpm --filter analytics build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@biomejs/biome": "^2.3.10"
+	},
+	"workspaces": {
+		"packages": [
+			"analytics",
+			"auth",
+			"client",
+			"common",
+			"dispatch",
+			"gateway",
+			"incident"
+		]
+	},
+	"engines": {
+		"node": "22"
+	},
+	"packageManager": "pnpm@10.16.1"
+}

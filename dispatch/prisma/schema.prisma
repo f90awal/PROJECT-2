@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Hospital {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  /// [ResourceLocation]
+  location            Json
+  totalBeds           Int      @default(0)
+  availableBeds       Int      @default(0)
+  totalAmbulances     Int      @default(0)
+  availableAmbulances Int      @default(0)
+  updatedAt           DateTime @updatedAt
+}
+
+model Station {
+  id        Int         @id @default(autoincrement())
+  name      String
+  type      StationType
+  /// [ResourceLocation]
+  location  Json
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  vehicles Vehicle[]
+}
+
+enum StationType {
+  ambulance
+  fire
+  police
+}
+
+model Vehicle {
+  id        Int           @id @default(autoincrement())
+  callSign  String        @unique
+  type      VehicleType
+  status    VehicleStatus @default(available)
+  stationId Int
+  station   Station       @relation(fields: [stationId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  driver     Driver?
+  locations  VehicleLocation[]
+  dispatches Dispatch[]
+
+  @@index([status])
+  @@index([stationId])
+}
+
+enum VehicleType {
+  ambulance
+  fire_truck
+  police_car
+  motorcycle
+}
+
+enum VehicleStatus {
+  available
+  dispatched
+  en_route
+  on_scene
+  returning
+  offline
+}
+
+model Driver {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String?
+  vehicleId Int?     @unique
+  vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  locations DriverLocation[]
+}
+
+model VehicleLocation {
+  id         Int      @id @default(autoincrement())
+  vehicleId  Int
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
+  lat        Float
+  lng        Float
+  speed      Float? // km/h
+  heading    Float? // degrees 0-360
+  recordedAt DateTime @default(now())
+
+  @@index([vehicleId, recordedAt])
+}
+
+model DriverLocation {
+  id         Int      @id @default(autoincrement())
+  driverId   Int
+  driver     Driver   @relation(fields: [driverId], references: [id])
+  lat        Float
+  lng        Float
+  recordedAt DateTime @default(now())
+
+  @@index([driverId, recordedAt])
+}
+
+model Dispatch {
+  id           Int            @id @default(autoincrement())
+  incidentId   String // ref to incident service — no FK, cross-service
+  vehicleId    Int
+  vehicle      Vehicle        @relation(fields: [vehicleId], references: [id])
+  status       DispatchStatus @default(active)
+  dispatchedAt DateTime       @default(now())
+  arrivedAt    DateTime?
+  clearedAt    DateTime?
+
+  @@index([status])
+  @@index([incidentId])
+  @@index([vehicleId])
+}
+
+enum DispatchStatus {
+  active
+  arrived
+  cleared
+}
+
+model Outbox {
+  id            Int          @id @default(autoincrement())
+  aggregateType String
+  aggregateId   String
+  topic         String
+  eventType     String
+  payload       Json
+  status        OutboxStatus @default(pending)
+  attempts      Int          @default(0)
+  nextAttempt   DateTime?
+  createdAt     DateTime     @default(now())
+  publishedAt   DateTime?
+
+  @@index([status, createdAt])
+}
+
+enum OutboxStatus {
+  pending
+  published
+  failed
+}

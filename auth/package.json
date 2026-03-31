@@ -1,0 +1,37 @@
+{
+	"name": "auth",
+	"type": "module",
+	"main": "dist/index.js",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "rm -rf dist && prisma generate && node build.mjs",
+		"start": "npm run db:migrate:deploy && node dist/index.js",
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:migrate:deploy": "prisma migrate deploy"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.19.11",
+		"@hono/swagger-ui": "^0.6.1",
+		"@prisma/adapter-pg": "^7.5.0",
+		"@prisma/client": "^7.5.0",
+		"argon2": "^0.44.0",
+		"date-fns": "^4.1.0",
+		"dotenv": "^17.3.1",
+		"hono": "^4.12.8",
+		"pg": "^8.20.0",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.17",
+		"@types/pg": "^8.18.0",
+		"esbuild": "^0.25.12",
+		"prisma": "^7.5.0",
+		"tsx": "^4.7.1",
+		"typescript": "^5.8.3"
+	},
+	"engines": {
+		"node": "22"
+	},
+	"packageManager": "pnpm@10.16.1"
+}
