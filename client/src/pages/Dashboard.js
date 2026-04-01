@@ -77,7 +77,7 @@ export default function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  });
 
   const availableVehicles = vehicles.filter(v => v.status === 'available').length;
 
