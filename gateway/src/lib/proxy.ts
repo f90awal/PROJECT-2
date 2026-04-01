@@ -36,7 +36,12 @@ async function proxy(c: Context, base: string, stripPrefix?: string) {
 		}
 	}
 
-	return fetch(target, init);
+	const upstream = await fetch(target, init);
+	return new Response(upstream.body, {
+		status: upstream.status,
+		statusText: upstream.statusText,
+		headers: new Headers(upstream.headers),
+	});
 }
 
 export { proxy };

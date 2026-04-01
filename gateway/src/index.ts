@@ -26,6 +26,7 @@ const safeAuthServiceUrl =
 
 app.use("*", logger(), cors());
 
+
 app.all("/api/auth/*", (c) => log(c, safeAuthServiceUrl));
 
 app.all("/api/*/doc", async (c) => {
