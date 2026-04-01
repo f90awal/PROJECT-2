@@ -1,60 +1,47 @@
 {
-	"name": "client",
-	"private": true,
-	"sideEffects": false,
-	"version": "0.0.1",
-	"type": "module",
-	"scripts": {
-		"build": "react-router build",
-		"dev": "react-router dev",
-		"lint": "biome lint",
-		"start": "node ./build/server/index.js",
-		"typecheck": "react-router typegen && tsc",
-		"makemigration": "prisma migrate dev --name $1",
-		"migrate": "prisma migrate deploy"
-	},
-	"dependencies": {
-		"@floating-ui/react": "^0.27.19",
-		"@iconify-json/lucide": "^1.2.74",
-		"@iconify-json/solar": "^1.2.5",
-		"@iconify-json/svg-spinners": "^1.2.4",
-		"@julr/unocss-preset-forms": "^2.0.0",
-		"@react-google-maps/api": "^2.20.8",
-		"@react-router/fs-routes": "^7.9.6",
-		"@react-router/node": "^7.9.6",
-		"@react-router/serve": "^7.9.6",
-		"@tanstack/react-query": "^5.95.2",
-		"@unocss/reset": "66.5.9",
-		"clsx": "^2.1.1",
-		"dotenv": "^17.2.3",
-		"isbot": "^5.1.32",
-		"jose": "^6.2.2",
-		"jotai": "^2.19.0",
-		"mapbox-gl": "^3.20.0",
-		"radashi": "^12.7.2",
-		"react": "^19.2.0",
-		"react-dom": "^19.2.0",
-		"react-hook-form": "^7.66.1",
-		"react-map-gl": "^8.1.0",
-		"react-router": "^7.9.6",
-		"react-router-hono-server": "^2.22.0",
-		"unocss": "^66.5.9"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.3.7",
-		"@react-router/dev": "^7.9.6",
-		"@types/node": "^24.10.1",
-		"@types/react": "^19.2.6",
-		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^5.1.1",
-		"openapi-typescript": "^7.13.0",
-		"swagger-typescript-api": "^13.6.5",
-		"type-fest": "^5.2.0",
-		"typescript": "^5.9.3",
-		"vite": "^7.2.4",
-		"vite-tsconfig-paths": "^5.1.4"
-	},
-	"engines": {
-		"node": ">=20.0.0"
-	}
+  "name": "clientelle",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.13.6",
+    "leaflet": "^1.9.4",
+    "leaflet-geosearch": "^4.4.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.6.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.13.2",
+    "react-scripts": "5.0.1",
+    "recharts": "^3.8.1",
+    "socket.io-client": "^4.8.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
