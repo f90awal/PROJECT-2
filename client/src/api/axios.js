@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const GATEWAY = 'https://gateway-production-7565.up.railway.app/api';
+const GATEWAY = process.env.GATEWAY_BASE;
 
 const createInstance = (baseURL) => {
   const instance = axios.create({ baseURL });
