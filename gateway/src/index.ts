@@ -9,6 +9,7 @@ import { authenticate } from "./lib/authenticate.js";
 import { SERVICE_ROUTES } from "./lib/ingress.js";
 import { log } from "./lib/log.js";
 import { resolveRoute } from "./lib/resolve-route.js";
+import { cors } from "hono/cors";
 
 declare global {
 	interface BigInt {
@@ -23,7 +24,7 @@ const safeAuthServiceUrl =
 		? authServiceUrl
 		: "http://localhost:3000";
 
-app.use("*", logger());
+app.use("*", logger(), cors());
 
 app.all("/api/auth/*", (c) => log(c, safeAuthServiceUrl));
 
